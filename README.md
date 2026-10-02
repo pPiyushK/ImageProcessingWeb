@@ -32,7 +32,7 @@ This project allows users to upload an image and perform different image-process
 - JavaScript – Frontend interactions
 
 ---
-
+```
 📁 Project Structure
 
 ImageProcessingTool/
@@ -58,7 +58,7 @@ ImageProcessingTool/
 │   └── image_operations.py
 │
 └── README.md
-
+```
 ---
 
 ⚙️ Installation
