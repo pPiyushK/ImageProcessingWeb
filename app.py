@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, redirect
 import os
 from werkzeug.utils import secure_filename
+from processing.image_opertains import grayscale
 
 app = Flask(__name__)
 app.secret_key = "123456"
@@ -24,13 +25,14 @@ def index():
         if not allowed_file(file.filename):
             return "File type not allowed"
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-        return redirect(url_for("uploaded_file", filename=filename))
+        input_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(input_path)
+        name,extension = os.path.splitext(filename)
+        output_filename = f"{name}_grayscale{extension}"
+        output_path = os.path.join(app.config["UPLOAD_FOLDER"], output_filename)
+        grayscale(input_path, output_path)
+        return render_template("index.html", Original=output_filename,processed=output_filename)
     return render_template("index.html")
-
-@app.route("/uploads/<filename>")
-def uploaded_file(filename):
-    return render_template("index.html", filename=filename)
 
 if __name__ == "__main__":
     app.run(debug=True)
