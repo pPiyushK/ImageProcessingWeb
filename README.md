@@ -41,17 +41,11 @@ ImageProcessingTool/
 ├── requirements.txt
 │
 ├── static/
-│   ├── css/
-│   │   └── style.css
-│   │
-│   ├── js/
-│   │   └── script.js
-│   │
-│   └── uploads/
-│
+│   └── upload/
+|
 ├── templates/
-│   ├── index.html
-│   └── result.html
+│   └── index.html
+│   
 │
 ├── processing/
 │   ├── __init__.py
