@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Processing Tool</title>
-
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -18,7 +12,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f2f4f7;
+            background: #f1f3f6;
             color: #222;
         }
 
@@ -26,34 +20,38 @@
             background: #222;
             color: white;
             text-align: center;
-            padding: 25px 15px;
+            padding: 30px 15px;
         }
 
         header h1 {
             margin: 0;
-            font-size: 32px;
+            font-size: 34px;
         }
 
         header p {
-            margin-top: 8px;
+            margin: 10px 0 0;
             color: #ccc;
         }
 
         .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 40px auto;
+            width: 92%;
+            max-width: 1100px;
+            margin: 35px auto;
         }
 
-        .upload-box {
+        .card {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
-        .upload-box h2 {
+        .upload-card {
+            text-align: center;
+        }
+
+        .upload-card h2 {
             margin-top: 0;
         }
 
@@ -65,45 +63,44 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         button {
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            border: 0;
+            padding: 11px 18px;
+            border-radius: 7px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
-            transition: 0.2s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        .gray-btn {
-            background: #333;
+            background: #222;
             color: white;
         }
 
-        .bright-btn {
-            background: #f5b700;
-            color: white;
+        button:hover,
+        .download-btn:hover {
+            opacity: 0.8;
         }
 
-        .dark-btn {
-            background: #555;
-            color: white;
+        .input-group {
+            margin-top: 20px;
         }
 
-        .image-section {
-            margin-top: 40px;
+        .input-group input {
+            width: 120px;
+            padding: 9px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
-        .image-section h2 {
+        .message {
+            background: #ffe0e0;
+            color: #b00000;
+            padding: 12px;
+            border-radius: 7px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
@@ -116,13 +113,12 @@
         }
 
         .image-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
             width: 45%;
             min-width: 280px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .image-card h3 {
@@ -131,7 +127,7 @@
 
         .image-card img {
             width: 100%;
-            max-height: 400px;
+            max-height: 450px;
             object-fit: contain;
             border-radius: 8px;
         }
@@ -139,186 +135,129 @@
         .download-btn {
             display: inline-block;
             margin-top: 15px;
-            padding: 10px 18px;
+            padding: 11px 20px;
             background: #222;
             color: white;
             text-decoration: none;
             border-radius: 7px;
         }
 
-        .download-btn:hover {
-            opacity: 0.8;
-        }
-
         footer {
             text-align: center;
-            margin-top: 50px;
-            padding: 20px;
+            padding: 25px;
             color: #777;
         }
 
-        @media (max-width: 600px) {
-
+        @media (max-width: 700px) {
             header h1 {
-                font-size: 25px;
+                font-size: 26px;
             }
 
             .container {
                 width: 95%;
             }
 
-            .image-card {
+            .image-card,
+            button,
+            .input-group input {
                 width: 100%;
             }
 
-            button {
-                width: 100%;
+            .input-group input {
+                margin: 5px 0;
             }
         }
-
     </style>
-
 </head>
-
 <body>
+<header>
+    <h1>Image Processing Tool</h1>
+    <p>Process your images using Python, Flask, NumPy, and Pillow</p>
+</header>
 
-    <header>
+<main class="container">
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
 
-        <h1>Image Processing Tool</h1>
+    <div class="card upload-card">
+        <h2>Upload Image</h2>
+        <p>Supported formats: JPG, JPEG, PNG, GIF, WEBP</p>
 
-        <p>
-            Upload an image and apply simple image processing operations
-        </p>
-
-    </header>
-
-    <main class="container">
-
-
-        <section class="upload-box">
-
-            <h2>Upload Your Image</h2>
-
-            <p>
-                Select a JPG, JPEG, PNG, GIF or WEBP image
-            </p>
-
-            <form action="/"
-                  method="POST"
-                  enctype="multipart/form-data">
-
-                <div class="file-input">
-
-                    <input type="file"
-                           name="image"
-                           accept="image/*"
-                           required>
-
-                </div>
-
-
-
-                <div class="buttons">
-
-                    <button type="submit"
-                            name="operation"
-                            value="grayscale"
-                            class="gray-btn">
-
-                        Grayscale
-
-                    </button>
-
-
-                    <button type="submit"
-                            name="operation"
-                            value="bright"
-                            class="bright-btn">
-
-                        Increase Brightness
-
-                    </button>
-
-
-                    <button type="submit"
-                            name="operation"
-                            value="dark"
-                            class="dark-btn">
-
-                        Decrease Brightness
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </section>
-
-
-
-        {% if original and processed %}
-
-        <section class="image-section">
-
-            <h2>Image Result</h2>
-
-            <div class="images">
-
-
-                <div class="image-card">
-
-                    <h3>Original Image</h3>
-
-                    <img
-                        src="{{ url_for('static',
-                        filename='uploads/' + original) }}"
-                        alt="Original Image">
-
-                </div>
-
-
-                <div class="image-card">
-
-                    <h3>Processed Image</h3>
-
-                    <img
-                        src="{{ url_for('static',
-                        filename='uploads/' + processed) }}"
-                        alt="Processed Image">
-
-
-                    <a
-                        class="download-btn"
-                        href="{{ url_for('static',
-                        filename='uploads/' + processed) }}"
-                        download>
-
-                        Download Image
-
-                    </a>
-
-                </div>
-
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <div class="file-input">
+                <input type="file" name="image" accept="image/*" required>
             </div>
 
-        </section>
+            <h3>Basic Operations</h3>
+            <div class="buttons">
+                <button type="submit" name="operation" value="grayscale">Grayscale</button>
+                <button type="submit" name="operation" value="bright">Increase Brightness</button>
+                <button type="submit" name="operation" value="dark">Decrease Brightness</button>
+                <button type="submit" name="operation" value="contrast">Contrast</button>
+            </div>
 
-        {% endif %}
+            <h3>Rotation</h3>
+            <div class="buttons">
+                <button type="submit" name="operation" value="rotate90">Rotate 90 deg</button>
+                <button type="submit" name="operation" value="rotate180">Rotate 180 deg</button>
+                <button type="submit" name="operation" value="rotate270">Rotate 270 deg</button>
+            </div>
 
-    </main>
+            <h3>Flip</h3>
+            <div class="buttons">
+                <button type="submit" name="operation" value="flip_horizontal">Horizontal</button>
+                <button type="submit" name="operation" value="flip_vertical">Vertical</button>
+            </div>
 
+            <h3>Resize</h3>
+            <div class="input-group">
+                <input type="number" name="width" placeholder="Width" min="1">
+                <input type="number" name="height" placeholder="Height" min="1">
+                <br>
+                <button type="submit" name="operation" value="resize">Resize Image</button>
+            </div>
 
+            <h3>Crop</h3>
+            <div class="input-group">
+                <input type="number" name="left" placeholder="Left" min="0">
+                <input type="number" name="top" placeholder="Top" min="0">
+                <input type="number" name="right" placeholder="Right" min="1">
+                <input type="number" name="bottom" placeholder="Bottom" min="1">
+                <br>
+                <button type="submit" name="operation" value="crop">Crop Image</button>
+            </div>
+        </form>
+    </div>
 
-    <footer>
+    {% if original and processed %}
+        <div class="card">
+            <h2 style="text-align: center;">Result</h2>
+            <div class="images">
+                <div class="image-card">
+                    <h3>Original Image</h3>
+                    <img src="{{ url_for('static', filename='uploads/' + original) }}" alt="Original Image">
+                </div>
 
-        <p>
-            Image Processing Tool | Built with
-            Python, Flask, NumPy & Pillow
-        </p>
+                <div class="image-card">
+                    <h3>Processed Image</h3>
+                    <img src="{{ url_for('static', filename='uploads/' + processed) }}" alt="Processed Image">
+                    <a
+                        class="download-btn"
+                        href="{{ url_for('static', filename='uploads/' + processed) }}"
+                        download
+                    >
+                        Download Processed Image
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</main>
 
-    </footer>
-
+<footer>
+    <p>Image Processing Tool</p>
+    <p>Built with Python, Flask, NumPy, and Pillow</p>
+</footer>
 </body>
-
 </html>
